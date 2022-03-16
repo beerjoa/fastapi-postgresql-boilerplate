@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "fastapi-postgresql-boilerplate"
+version = "0.1.0"
+description = ""
+authors = ["Jaeyong Shim <yoooong2@gmail.com>"]
+packages = [
+    {include = "app"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.70.0"
+alembic = "^1.7.5"
+uvicorn = "^0.16.0"
+SQLAlchemy = "^1.4.28"
+pydantic = "^1.8.2"
+psycopg2-binary = "^2.9.2"
+python-multipart = "^0.0.5"
+requests = "^2.26.0"
+python-dotenv = "^0.19.2"
+loguru = "^0.6.0"
+psycopg2 = "^2.9.3"
+flake8 = "^4.0.1"
+hypercorn = "^0.13.2"
+black = "^22.1.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+pylint = "^2.12.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
