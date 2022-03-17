@@ -224,5 +224,5 @@ cython_debug/
 
 # custom
 **/.hide/
-
+/database/init_db.sh
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,macos,linux

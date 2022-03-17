@@ -1,0 +1,26 @@
+version: "3.9"
+
+networks:
+  fpb-net:
+    driver: bridge
+
+volumes:
+  postgresql_data: 
+    driver: local
+
+services:
+  # Database
+  postgresql:
+    container_name: postgresql
+    image: postgres:12.2-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - "./database/init_db.sql:/docker-entrypoint-initdb.d/init.sql"
+      - postgresql_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - fpb-net
+  
