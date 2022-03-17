@@ -13,6 +13,7 @@ A boilerplate that can serve as a base for FastAPI with postgresql
 
 ## Requirements
 
+- docker & docker-compose
 - poetry
 
 ## Usage
