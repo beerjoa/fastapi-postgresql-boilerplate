@@ -21,6 +21,9 @@ A boilerplate that can serve as a base for FastAPI with postgresql
 ### Install
 
 ```bash
+### make .env file using .env.example file
+$ cp .env.example .env
+
 ### To install the defined dependencies for project
 $ poetry install
 ```
