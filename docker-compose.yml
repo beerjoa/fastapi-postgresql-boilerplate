@@ -13,11 +13,11 @@ services:
   postgresql:
     container_name: postgresql
     image: postgres:12.2-alpine
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - ".env"
     volumes:
-      - "./database/init_db.sql:/docker-entrypoint-initdb.d/init.sql"
+      # - "./database/init_db.sql:/docker-entrypoint-initdb.d/init.sql"
+      - "./database/init_db.sh:/docker-entrypoint-initdb.d/init.sh"
       - postgresql_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
