@@ -1,16 +1,19 @@
-from typing import Dict, Generator
+from typing import Dict, Generator, Any
 
 import pytest
 
 from fastapi.testclient import TestClient
 
-from app.database.session import SessionLocal
+from app.database.session import CustomSession
+
 from app.main import app
 
 
 @pytest.fixture(scope="session")
 def db() -> Generator:
-    yield SessionLocal()
+    db_session = CustomSession(db_name="docker_db").get_session()
+    db = db_session()
+    yield db
 
 
 @pytest.fixture(scope="module")
@@ -21,8 +24,43 @@ def client() -> Generator:
 
 @pytest.fixture(scope="module")
 def random_user() -> Dict[str, str]:
-    return {
-        "name": "tester",
-        "password": "123",
-        "email": "tester@test.com",
-    }
+    return dict(
+        name="tester",
+        password="123",
+        email="tester@test.com",
+    )
+
+
+@pytest.fixture(scope="module")
+def filter_params() -> Dict[str, Any]:
+    return dict(skip=0, limit=100)
+
+
+@pytest.fixture(scope="module")
+def created_random_user() -> Dict[str, str]:
+    return dict(
+        id=None,
+        name="tester",
+        password="123",
+        email="tester@test.com",
+    )
+
+
+@pytest.fixture(scope="module")
+def update_target_user() -> Dict[str, str]:
+    return dict(
+        id=None,
+        name="new_tester",
+        password="123",
+        email="new_tester@test.com",
+    )
+
+
+@pytest.fixture(scope="module")
+def invalid_user() -> Dict[str, str]:
+    return dict(
+        id=-1,
+        name="",
+        password="",
+        email="",
+    )

@@ -55,7 +55,9 @@ class CustomizeLogger:
         retention: str,
         format: str,
     ):
-
+        logger.configure(
+            extra={"request_id": "app"},
+        )
         logger.remove()
         logger.add(
             sys.stdout,
@@ -73,9 +75,12 @@ class CustomizeLogger:
             level=level.upper(),
             format=format,
         )
-        logging.basicConfig(handlers=[InterceptHandler()], level=0)
+        logging.basicConfig(
+            handlers=[InterceptHandler()],
+            level=0,
+        )
 
-        return logger.bind(request_id=None, method=None)
+        return logger.bind(request_id="app", method=None)
 
     @classmethod
     def load_logging_config(cls, config_path):

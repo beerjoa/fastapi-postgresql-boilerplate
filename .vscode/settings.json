@@ -1,6 +1,11 @@
 {
     "python.formatting.provider": "black",
-    "python.formatting.blackArgs": ["--line-length", "120", "--exclude", "/*\\.json/"],
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "120",
+        "--exclude",
+        "/*\\.json/"
+    ],
     "editor.formatOnSave": true,
     "files.exclude": {
         "**/__pycache__": true

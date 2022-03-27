@@ -3,6 +3,9 @@ import uvicorn
 
 from pathlib import Path
 from fastapi import FastAPI
+
+from fastapi.exceptions import RequestValidationError
+from fastapi.exceptions import HTTPException
 from fastapi.openapi.docs import (
     get_redoc_html,
     get_swagger_ui_html,
@@ -12,7 +15,13 @@ from starlette.staticfiles import StaticFiles
 
 from app.api.v1 import api_router
 from app.core import settings
-from app.utils import CustomizeLogger
+from app.utils import (
+    AppExceptionCase,
+    app_exception_handler,
+    CustomizeLogger,
+    http_exception_handler,
+    request_validation_exception_handler,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -55,6 +64,18 @@ def create_app() -> FastAPI:
             title=_app.title + " - ReDoc",
             redoc_js_url=f"{settings.ROOT_PATH}/static/redoc.standalone.js",
         )
+
+    @_app.exception_handler(HTTPException)
+    async def custom_http_exception_handler(request, e):
+        return await http_exception_handler(request, e)
+
+    @_app.exception_handler(RequestValidationError)
+    async def custom_validation_exception_handler(request, e):
+        return await request_validation_exception_handler(request, e)
+
+    @_app.exception_handler(AppExceptionCase)
+    async def custom_app_exception_handler(request, e):
+        return await app_exception_handler(request, e)
 
     return _app
 

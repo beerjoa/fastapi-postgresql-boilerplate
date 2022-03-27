@@ -28,7 +28,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db.query(self.model).offset(skip).limit(limit).all()
 
     def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
-        obj_in_data = jsonable_encoder(obj_in)
+        obj_in_data = obj_in.dict(exclude_unset=True)
         db_obj = self.model(**obj_in_data)
         db.add(db_obj)
         db.commit()
@@ -55,7 +55,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.refresh(db_obj)
         return db_obj
 
-    def remove(self, db: Session, *, model_id: int) -> ModelType:
+    def delete(self, db: Session, *, model_id: int) -> ModelType:
         obj = db.query(self.model).get(model_id)
         db.delete(obj)
         db.commit()
