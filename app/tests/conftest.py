@@ -47,6 +47,16 @@ def created_random_user() -> Dict[str, str]:
 
 
 @pytest.fixture(scope="module")
+def update_target_user() -> Dict[str, str]:
+    return dict(
+        id=None,
+        name="new_tester",
+        password="123",
+        email="new_tester@test.com",
+    )
+
+
+@pytest.fixture(scope="module")
 def invalid_user() -> Dict[str, str]:
     return dict(
         id=-1,

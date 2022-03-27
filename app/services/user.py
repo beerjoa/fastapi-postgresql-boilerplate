@@ -66,7 +66,7 @@ class UserService(BaseService):
         updated_user = crud_user.update(self.db, db_obj=user, obj_in=user_in)
         return ServiceResult(
             dict(
-                status_code=HTTP_201_CREATED,
+                status_code=HTTP_200_OK,
                 content={"message": "updated user", "data": jsonable_encoder(updated_user)},
             )
         )

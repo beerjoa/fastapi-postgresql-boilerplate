@@ -58,6 +58,42 @@ def test_get_user_by_id_exception(
     assert result["context"].get("reason") == f"User with ID:{invalid_user.get('id')} does not exist."
 
 
+def test_update_user(
+    client: TestClient, created_random_user: Dict[str, str], update_target_user: Dict[str, str]
+) -> None:
+
+    update_target_user.pop("id")
+    response = client.put(f"{settings.API_V1_STR}/users/{created_random_user.get('id')}", json=update_target_user)
+    result = response.json()
+
+    updated_user = result["data"]
+    assert response.status_code == HTTP_200_OK
+    assert updated_user.get("id") == created_random_user.get("id")
+    assert updated_user.get("name") == update_target_user.get("name")
+    assert updated_user.get("password") == update_target_user.get("password")
+    assert updated_user.get("email") == update_target_user.get("email")
+
+    response = client.put(f"{settings.API_V1_STR}/users/{created_random_user.get('id')}", json=created_random_user)
+    result = response.json()
+
+    rollbacked_user = result["data"]
+    assert response.status_code == HTTP_200_OK
+    assert rollbacked_user.get("id") == created_random_user.get("id")
+    assert rollbacked_user.get("name") == created_random_user.get("name")
+    assert rollbacked_user.get("password") == created_random_user.get("password")
+    assert rollbacked_user.get("email") == created_random_user.get("email")
+
+
+def test_update_user_exception(client: TestClient, invalid_user: Dict[str, str]) -> None:
+    ## 1. not found
+    response = client.put(f"{settings.API_V1_STR}/users/{invalid_user.get('id')}", json=invalid_user)
+
+    result = response.json()
+    assert response.status_code == HTTP_404_NOT_FOUND
+    assert result.get("app_exception") == "Response4XX"
+    assert result["context"].get("reason") == f"User with ID:{invalid_user.get('id')} does not exist."
+
+
 def test_delete_user(client: TestClient, created_random_user: Dict[str, str]) -> None:
     response = client.delete(f"{settings.API_V1_STR}/users/{created_random_user.get('id')}")
     result = response.json()
@@ -70,9 +106,7 @@ def test_delete_user(client: TestClient, created_random_user: Dict[str, str]) ->
     assert deleted_user.get("email") == created_random_user.get("email")
 
 
-def test_delete_user_exception(
-    client: TestClient, invalid_user: Dict[str, str], created_random_user: Dict[str, str]
-) -> None:
+def test_delete_user_exception(client: TestClient, invalid_user: Dict[str, str]) -> None:
     ## 1. not found
     response = client.delete(f"{settings.API_V1_STR}/users/{invalid_user.get('id')}")
 
