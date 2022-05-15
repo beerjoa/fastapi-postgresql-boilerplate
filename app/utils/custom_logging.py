@@ -3,6 +3,7 @@ import sys
 import json
 from pathlib import Path
 from loguru import logger
+from asgi_correlation_id.context import correlation_id
 
 
 class InterceptHandler(logging.Handler):
@@ -55,9 +56,10 @@ class CustomizeLogger:
         retention: str,
         format: str,
     ):
-        logger.configure(
-            extra={"request_id": "app"},
-        )
+        def correlation_id_filter(record):
+            record["correlation_id"] = correlation_id.get()
+            return record["correlation_id"]
+
         logger.remove()
         logger.add(
             sys.stdout,
@@ -65,6 +67,7 @@ class CustomizeLogger:
             backtrace=True,
             level=level.upper(),
             format=format,
+            filter=correlation_id_filter,
         )
         logger.add(
             str(filepath),
@@ -74,6 +77,7 @@ class CustomizeLogger:
             backtrace=True,
             level=level.upper(),
             format=format,
+            filter=correlation_id_filter,
         )
         logging.basicConfig(
             handlers=[InterceptHandler()],
