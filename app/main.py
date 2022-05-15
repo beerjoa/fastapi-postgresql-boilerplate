@@ -1,6 +1,3 @@
-import logging
-import uvicorn
-
 from pathlib import Path
 from fastapi import FastAPI
 
@@ -12,6 +9,7 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from starlette.staticfiles import StaticFiles
+from asgi_correlation_id import CorrelationIdMiddleware
 
 from app.api.v1 import api_router
 from app.core import settings
@@ -22,9 +20,6 @@ from app.utils import (
     http_exception_handler,
     request_validation_exception_handler,
 )
-
-
-logger = logging.getLogger(__name__)
 
 config_path = Path(__file__).with_name("logging_conf.json")
 
@@ -38,6 +33,7 @@ def create_app() -> FastAPI:
         docs_url=None,
         redoc_url=None,
     )
+    _app.add_middleware(CorrelationIdMiddleware)
     _app.logger = CustomizeLogger.make_logger(config_path)
     _app.include_router(api_router, prefix=settings.API_V1_STR)
     _app.mount("/static", StaticFiles(directory="app/static"))
@@ -81,6 +77,3 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", root_path=settings.ROOT_PATH, host="0.0.0.0", port=8000)
