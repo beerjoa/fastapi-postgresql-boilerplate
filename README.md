@@ -31,14 +31,21 @@ $ poetry install
 ### Run
 
 ```bash
+### running postgresql instance using docker-compose
+$ docker-compose up postgresql -d
+
 ### To run FastAPI server
-$ poetry run uvicorn app.main:app --host 0.0.0.0 --reload --log-level info
+$ poetry run uvicorn app.main:app --host 0.0.0.0 --reload
 ```
 
 ### Test
 
 ```bash
+### running postgresql instance using docker-compose
+$ docker-compose up postgresql -d
 
+### run test code
+$ coverage run -m pytest -v
 ```
 
 ## Reference

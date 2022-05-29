@@ -1,22 +1,21 @@
 import inspect
 from loguru import logger
 from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
 from app.utils import AppExceptionCase
 
 
 class ServiceResult(object):
-    def __init__(self, arg):
-        if isinstance(arg, AppExceptionCase):
+    def __init__(self, args):
+        if isinstance(args, AppExceptionCase):
             self.success = False
-            self.exception_case = arg.expception_case
-            self.status_code = arg.status_code
-            self.result = arg
+            self.exception_case = args.expception_case
+            self.status_code = args.status_code
+            self.result = args
         else:
             self.success = True
             self.exception_case = None
             self.status_code = None
-            self.result = JSONResponse(**arg)
+            self.result = JSONResponse(**args)
 
     def __str__(self) -> str:
         if self.success:
@@ -47,3 +46,12 @@ def handle_result(result: ServiceResult):
             raise exception
     with result as result:
         return result
+
+
+def return_service(service_func) -> ServiceResult:
+    def wrapper(*args, **kwargs):
+        sf = service_func(*args, **kwargs)
+
+        return ServiceResult(sf)
+
+    return wrapper
