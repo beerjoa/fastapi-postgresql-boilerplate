@@ -72,3 +72,4 @@ class AppException:
 
 
 response_4xx = AppException.Response4XX
+response_5xx = AppException.Response5XX
