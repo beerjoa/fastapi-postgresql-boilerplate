@@ -25,6 +25,7 @@ hypercorn = "^0.13.2"
 black = "^22.1.0"
 sqlacodegen = "^2.3.0"
 asgi-correlation-id = "^2.0.0"
+asyncpg = "^0.25.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
