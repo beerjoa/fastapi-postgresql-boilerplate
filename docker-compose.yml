@@ -16,8 +16,8 @@ services:
     env_file:
       - ".env"
     volumes:
-      # - "./database/init_db.sql:/docker-entrypoint-initdb.d/init.sql"
-      - "./database/init_db.sh:/docker-entrypoint-initdb.d/init.sh"
+      # - "./database/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql"
+      - "./database/init_db.sh:/docker-entrypoint-initdb.d/init_db.sh"
       - postgresql_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
