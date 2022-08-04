@@ -3,6 +3,7 @@ from fastapi import FastAPI
 
 from fastapi.exceptions import RequestValidationError
 from fastapi.exceptions import HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import (
     get_redoc_html,
     get_swagger_ui_html,
@@ -25,19 +26,20 @@ config_path = Path(__file__).with_name("logging_conf.json")
 
 
 def create_app() -> FastAPI:
-    _app = FastAPI(
-        root_path=settings.ROOT_PATH,
-        title=settings.PROJECT_NAME,
-        version=settings.APP_VERSION,
-        debug=False,
-        docs_url=None,
-        redoc_url=None,
+    _app = FastAPI(**settings.fastapi_kwargs)
+
+    _app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.allowed_hosts,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
+
     _app.add_middleware(CorrelationIdMiddleware)
     _app.logger = CustomizeLogger.make_logger(config_path)
-    _app.include_router(api_router, prefix=settings.API_V1_STR)
+    _app.include_router(api_router, prefix=settings.api_v1_prefix)
     _app.mount("/static", StaticFiles(directory="app/static"))
-    _app.openapi_url = "./openapi.json" if settings.ROOT_PATH else "/openapi.json"
 
     @_app.get("/docs", include_in_schema=False)
     async def custom_swagger_ui_html():
@@ -45,8 +47,8 @@ def create_app() -> FastAPI:
             openapi_url=_app.openapi_url,
             title=_app.title + " - Swagger UI custom",
             oauth2_redirect_url=_app.swagger_ui_oauth2_redirect_url,
-            swagger_js_url=f"{settings.ROOT_PATH}/static/swagger-ui-bundle.js",
-            swagger_css_url=f"{settings.ROOT_PATH}/static/swagger-ui.css",
+            swagger_js_url=f"{settings.openapi_prefix}/static/swagger-ui-bundle.js",
+            swagger_css_url=f"{settings.openapi_prefix}/static/swagger-ui.css",
         )
 
     @_app.get(_app.swagger_ui_oauth2_redirect_url, include_in_schema=False)
@@ -58,7 +60,7 @@ def create_app() -> FastAPI:
         return get_redoc_html(
             openapi_url=_app.openapi_url,
             title=_app.title + " - ReDoc",
-            redoc_js_url=f"{settings.ROOT_PATH}/static/redoc.standalone.js",
+            redoc_js_url=f"{settings.openapi_prefix}/static/redoc.standalone.js",
         )
 
     @_app.exception_handler(HTTPException)

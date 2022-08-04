@@ -1,16 +1,16 @@
 from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.core import settings
 
 
-class CustomSession:
+class Session:
     def __init__(self, db_name: str):
-        self.db_url = settings.DB_URL_CONF.dict()
-        self.engine = create_engine(
-            url=self.db_url[db_name],
-            pool_pre_ping=True,
-        )
+        self.db_url = settings.db_url_conf.dict()
+        self.engine = create_async_engine(url=self.db_url[db_name], echo=True, future=True)
 
-    def get_session(self):
-        return sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+    async def get_session(self):
+        return sessionmaker(
+            bind=self.engine, class_=AsyncSession, expire_on_commit=False, autocommit=False, autoflush=False
+        )

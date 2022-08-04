@@ -4,14 +4,14 @@ import pytest
 
 from fastapi.testclient import TestClient
 
-from app.database.session import CustomSession
+from app.database.session import Session
 
 from app.main import app
 
 
 @pytest.fixture(scope="session")
 def db() -> Generator:
-    db_session = CustomSession(db_name="docker_db").get_session()
+    db_session = Session(db_name="docker_db").get_session()
     db = db_session()
     yield db
 

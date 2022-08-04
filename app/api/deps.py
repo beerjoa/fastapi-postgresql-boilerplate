@@ -1,24 +1,28 @@
-from typing import Generator
+from typing import Generator, AsyncGenerator
 
-from app.database.session import CustomSession
+from app.database.session import Session
+
+from asyncpg.connection import Connection
 
 
 def get_postgres() -> Generator:
     try:
-        db_session = CustomSession(db_name="postgres").get_session()
+        db_session = Session(db_name="postgres").get_session()
         db = db_session()
         yield db
     finally:
         db.close()
 
 
-def get_docker_db() -> Generator:
+async def get_docker_db() -> AsyncGenerator[Connection, None]:
     try:
-        db_session = CustomSession(db_name="docker_db").get_session()
-        db = db_session()
-        yield db
+        session = Session(db_name="docker_db")
+        db_session = await session.get_session()
+
+        async with db_session() as db:
+            yield db
     finally:
-        db.close()
+        await db.close()
 
 
 db_sessions = {
