@@ -39,7 +39,7 @@ def caller_info() -> str:
     return f"{info.filename}:{info.function}:{info.lineno}"
 
 
-def handle_result(result: ServiceResult):
+async def handle_result(result: ServiceResult):
     if not result.success:
         with result as exception:
             logger.error(f"{exception} | caller={caller_info()}")
@@ -49,8 +49,8 @@ def handle_result(result: ServiceResult):
 
 
 def return_service(service_func) -> ServiceResult:
-    def wrapper(*args, **kwargs):
-        sf = service_func(*args, **kwargs)
+    async def wrapper(*args, **kwargs):
+        sf = await service_func(*args, **kwargs)
 
         return ServiceResult(sf)
 

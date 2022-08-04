@@ -22,8 +22,9 @@ class UserService(BaseService):
         )
 
     @return_service
-    def get_users(self, filters: dict) -> ServiceResult:
-        users = crud_user.get_multi(self.db, **filters)
+    async def get_users(self, filters: dict) -> ServiceResult:
+        users = await crud_user.get_multi(self.db, **filters)
+
         if not users:
             return response_4xx(status_code=HTTP_404_NOT_FOUND, context={"reason": "there are no users"})
 
@@ -33,21 +34,21 @@ class UserService(BaseService):
         )
 
     @return_service
-    def create_user(self, obj_in: CreateSchemaType) -> ServiceResult:
-        duplicate_user = crud_user.get_duplicate_user(self.db, obj_in=obj_in)
+    async def create_user(self, obj_in: CreateSchemaType) -> ServiceResult:
+        duplicate_user = await crud_user.get_duplicate_user(self.db, obj_in=obj_in)
 
         if duplicate_user:
             return response_4xx(status_code=HTTP_400_BAD_REQUEST, context={"reason": "already created user"})
 
-        created_user = crud_user.create(self.db, obj_in=obj_in)
+        created_user = await crud_user.create(self.db, obj_in=obj_in)
         return dict(
             status_code=HTTP_201_CREATED,
             content={"message": "created user", "data": jsonable_encoder(created_user)},
         )
 
     @return_service
-    def update_user(self, user_id: int, user_in: UpdateSchemaType) -> ServiceResult:
-        user = crud_user.get(self.db, model_id=user_id)
+    async def update_user(self, user_id: int, user_in: UpdateSchemaType) -> ServiceResult:
+        user = await crud_user.get(self.db, model_id=user_id)
 
         if not user:
             return response_4xx(
@@ -55,15 +56,15 @@ class UserService(BaseService):
                 context={"reason": f"User with ID:{user_id} does not exist."},
             )
 
-        updated_user = crud_user.update(self.db, db_obj=user, obj_in=user_in)
+        updated_user = await crud_user.update(self.db, db_obj=user, obj_in=user_in)
         return dict(
             status_code=HTTP_200_OK,
             content={"message": "updated user", "data": jsonable_encoder(updated_user)},
         )
 
     @return_service
-    def delete_user(self, user_id: int) -> ServiceResult:
-        user = crud_user.get(self.db, model_id=user_id)
+    async def delete_user(self, user_id: int) -> ServiceResult:
+        user = await crud_user.get(self.db, model_id=user_id)
 
         if not user:
             return response_4xx(
@@ -71,7 +72,7 @@ class UserService(BaseService):
                 context={"reason": f"User with ID:{user_id} does not exist."},
             )
 
-        deleted_user = crud_user.delete(self.db, model_id=user_id)
+        deleted_user = await crud_user.delete(self.db, db_obj=user)
         return dict(
             status_code=HTTP_200_OK,
             content={"message": "deleted user", "data": jsonable_encoder(deleted_user)},
