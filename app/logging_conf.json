@@ -2,7 +2,7 @@
     "logger": {
         "path": "./var/logs/app",
         "filename": "access.log",
-        "level": "info",
+        "level": "debug",
         "rotation": "1 days",
         "retention": "1 months",
         "format": "<level>{level: <8}</level> <green>{time:YYYY-MM-DD HH:mm:ss.SSS!UTC}</green> [<red>{correlation_id}</red>] - <cyan>{name}</cyan>:<cyan>{function}</cyan> - <level>{message}</level>"
