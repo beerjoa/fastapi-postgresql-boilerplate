@@ -224,5 +224,7 @@ cython_debug/
 
 # custom
 **/.hide/
+**/.idea/
+
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,macos,linux

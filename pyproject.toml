@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fastapi-postgresql-boilerplate"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["Jaeyong Shim <yoooong2@gmail.com>"]
 packages = [
@@ -8,30 +8,39 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-fastapi = "^0.70.0"
-alembic = "^1.7.5"
+python = "^3.10"
+fastapi = "^0.87.0"
+alembic = "^1.8.1"
 uvicorn = "^0.16.0"
-SQLAlchemy = "^1.4.28"
-pydantic = "^1.8.2"
-psycopg2-binary = "^2.9.2"
+SQLAlchemy = "^1.4.44"
+pydantic = "^1.10.2"
+psycopg2-binary = "^2.9.5"
 python-multipart = "^0.0.5"
-requests = "^2.26.0"
+requests = "^2.28.1"
 python-dotenv = "^0.19.2"
 loguru = "^0.6.0"
-psycopg2 = "^2.9.3"
+psycopg2 = "^2.9.5"
 flake8 = "^4.0.1"
 hypercorn = "^0.13.2"
-black = "^22.1.0"
+black = "^22.10.0"
 sqlacodegen = "^2.3.0"
 asgi-correlation-id = "^2.0.0"
-asyncpg = "^0.25.0"
+asyncpg = "^0.27.0"
+greenlet = "^2.0.1"
+httpx = "^0.23.0"
 
-[tool.poetry.dev-dependencies]
-pytest = "^5.2"
-pylint = "^2.12.2"
+[tool.poetry.group.dev.dependencies]
+coverage = "^6.5.0"
+pytest = "^7.2.0"
+pylint = "^2.15.5"
 pytest-cov = "^3.0.0"
 
+
+[tool.isort]
+profile = "black"
+src_paths = ["app", "tests"]
+combine_as_imports = true
+
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.2.0"]
 build-backend = "poetry.core.masonry.api"
