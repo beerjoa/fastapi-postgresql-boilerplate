@@ -1,13 +1,19 @@
 from typing import Dict
 
 from fastapi.testclient import TestClient
-from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_400_BAD_REQUEST,
+    HTTP_404_NOT_FOUND,
+)
+
 from app.core import settings
 from app.models import User
 
 
 def test_create_user(client: TestClient, random_user: Dict[str, str], created_random_user: Dict[str, str]) -> None:
-    response = client.post(f"{settings.API_V1_STR}/users", json=random_user)
+    response = client.post(f"{settings.api_v1_prefix}/users", json=random_user)
     result = response.json()
     created_user = result.get("data")
     assert response.status_code == HTTP_201_CREATED
@@ -19,7 +25,7 @@ def test_create_user(client: TestClient, random_user: Dict[str, str], created_ra
 
 
 def test_create_user_duplicate_user(client: TestClient, random_user: Dict[str, str]) -> None:
-    response = client.post(f"{settings.API_V1_STR}/users", json=random_user)
+    response = client.post(f"{settings.api_v1_prefix}/users", json=random_user)
     result = response.json()
     assert response.status_code == HTTP_400_BAD_REQUEST
     assert result.get("app_exception") == "Response4XX"
@@ -27,7 +33,7 @@ def test_create_user_duplicate_user(client: TestClient, random_user: Dict[str, s
 
 
 def test_get_users(client: TestClient, filter_params: Dict[str, int]) -> None:
-    response = client.get(f"{settings.API_V1_STR}/users", params=filter_params)
+    response = client.get(f"{settings.api_v1_prefix}/users", params=filter_params)
     result = response.json()
     filterd_users = result.get("data")
     assert response.status_code == HTTP_200_OK
@@ -35,7 +41,7 @@ def test_get_users(client: TestClient, filter_params: Dict[str, int]) -> None:
 
 
 def test_get_user_by_id(client: TestClient, created_random_user: Dict[str, str]) -> None:
-    response = client.get(f"{settings.API_V1_STR}/users/{created_random_user.get('id')}")
+    response = client.get(f"{settings.api_v1_prefix}/users/{created_random_user.get('id')}")
     result = response.json()
 
     result_user = result.get("data")
@@ -50,7 +56,7 @@ def test_get_user_by_id_exception(
     client: TestClient, invalid_user: Dict[str, str], created_random_user: Dict[str, str]
 ) -> None:
     ## 1. not found
-    response = client.get(f"{settings.API_V1_STR}/users/{invalid_user.get('id')}")
+    response = client.get(f"{settings.api_v1_prefix}/users/{invalid_user.get('id')}")
 
     result = response.json()
     assert response.status_code == HTTP_404_NOT_FOUND
@@ -63,7 +69,7 @@ def test_update_user(
 ) -> None:
 
     update_target_user.pop("id")
-    response = client.put(f"{settings.API_V1_STR}/users/{created_random_user.get('id')}", json=update_target_user)
+    response = client.put(f"{settings.api_v1_prefix}/users/{created_random_user.get('id')}", json=update_target_user)
     result = response.json()
 
     updated_user = result["data"]
@@ -73,7 +79,7 @@ def test_update_user(
     assert updated_user.get("password") == update_target_user.get("password")
     assert updated_user.get("email") == update_target_user.get("email")
 
-    response = client.put(f"{settings.API_V1_STR}/users/{created_random_user.get('id')}", json=created_random_user)
+    response = client.put(f"{settings.api_v1_prefix}/users/{created_random_user.get('id')}", json=created_random_user)
     result = response.json()
 
     rollbacked_user = result["data"]
@@ -86,7 +92,7 @@ def test_update_user(
 
 def test_update_user_exception(client: TestClient, invalid_user: Dict[str, str]) -> None:
     ## 1. not found
-    response = client.put(f"{settings.API_V1_STR}/users/{invalid_user.get('id')}", json=invalid_user)
+    response = client.put(f"{settings.api_v1_prefix}/users/{invalid_user.get('id')}", json=invalid_user)
 
     result = response.json()
     assert response.status_code == HTTP_404_NOT_FOUND
@@ -95,7 +101,7 @@ def test_update_user_exception(client: TestClient, invalid_user: Dict[str, str])
 
 
 def test_delete_user(client: TestClient, created_random_user: Dict[str, str]) -> None:
-    response = client.delete(f"{settings.API_V1_STR}/users/{created_random_user.get('id')}")
+    response = client.delete(f"{settings.api_v1_prefix}/users/{created_random_user.get('id')}")
     result = response.json()
 
     deleted_user = result["data"]
@@ -108,7 +114,7 @@ def test_delete_user(client: TestClient, created_random_user: Dict[str, str]) ->
 
 def test_delete_user_exception(client: TestClient, invalid_user: Dict[str, str]) -> None:
     ## 1. not found
-    response = client.delete(f"{settings.API_V1_STR}/users/{invalid_user.get('id')}")
+    response = client.delete(f"{settings.api_v1_prefix}/users/{invalid_user.get('id')}")
 
     result = response.json()
     assert response.status_code == HTTP_404_NOT_FOUND
