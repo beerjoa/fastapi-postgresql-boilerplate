@@ -1,0 +1,10 @@
+{
+	"configurations": [
+		{
+			"type": "command",
+			"name": "Run fastapi",
+			"program": "poetry",
+			"args":["run","uvicorn","app.main:app", "--host" ,"0.0.0.0","--reload"]
+		}
+	]
+}
