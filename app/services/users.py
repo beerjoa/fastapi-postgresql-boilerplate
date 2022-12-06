@@ -49,6 +49,24 @@ class UsersService(BaseService):
         )
 
     @return_service
+    async def get_user_by_token(
+        self,
+        token_user: User,
+    ) -> ServiceResult:
+        if not token_user:
+            return response_4xx(
+                status_code=HTTP_400_BAD_REQUEST, context={"reason": constant.FAIL_VALIDATION_MATCHED_USER_TOKEN}
+            )
+
+        return dict(
+            status_code=HTTP_200_OK,
+            content={
+                "message": constant.SUCCESS_MATCHED_USER_TOKEN,
+                "data": jsonable_encoder(UserOutData.from_orm(token_user)),
+            },
+        )
+
+    @return_service
     async def get_users(
         self,
         users_filters: UsersFilters = Depends(get_users_filters),
@@ -152,25 +170,11 @@ class UsersService(BaseService):
     @return_service
     async def delete_user(
         self,
-        user_in: UserInSignIn,
+        token_user: User,
         users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     ) -> ServiceResult:
-        searched_user = await users_repo.get_user_by_email(email=user_in.email)
 
-        if not searched_user:
-            return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST, context={"reason": constant.FAIL_VALIDATION_MATCHED_USER_EMAIL}
-            )
-
-        validation_password = await users_repo.get_user_password_validation(
-            user=searched_user, password=user_in.password
-        )
-        if not validation_password:
-            return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST, context={"reason": constant.FAIL_VALIDATION_USER_WRONG_PASSWORD}
-            )
-
-        deleted_user = await users_repo.delete_user(user=searched_user)
+        deleted_user = await users_repo.delete_user(user=token_user)
         return dict(
             status_code=HTTP_200_OK,
             content={"message": constant.SUCCESS_DELETE_USER, "data": jsonable_encoder(deleted_user)},
