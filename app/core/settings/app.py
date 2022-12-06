@@ -1,7 +1,9 @@
 import os
 import secrets
 from typing import Any, Dict, List, Tuple
-from pydantic import BaseSettings, Field, PostgresDsn
+
+from pydantic import BaseSettings, PostgresDsn, SecretStr
+
 from app.core.settings.base import BaseAppSettings
 
 
@@ -20,6 +22,8 @@ class AppSettings(BaseAppSettings):
     version: str = "0.1.0"
 
     api_v1_prefix: str = "/api/v1"
+    secret_key: SecretStr
+    jwt_token_prefix: str = "bearer"
 
     db_url_conf = DBUrlSettings()
 
