@@ -60,8 +60,8 @@ def _create_users_table() -> None:
     op.create_table(
         "users",
         sa.Column("id", sa.Integer, primary_key=True),
-        sa.Column("username", sa.Text, unique=True, nullable=False, index=True),
-        sa.Column("email", sa.Text, unique=True, nullable=False, index=True),
+        sa.Column("username", sa.Text, unique=False, nullable=False, index=True),
+        sa.Column("email", sa.Text, unique=False, nullable=False, index=True),
         sa.Column("salt", sa.Text, nullable=False),
         sa.Column("hashed_password", sa.Text),
         *_timestamps(),

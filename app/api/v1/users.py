@@ -1,62 +1,80 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
+from starlette.status import HTTP_200_OK
 
-
-from app import schemas, services
-from app.utils import handle_result, ServiceResult, ERROR_RESPONSES
-from app.api.deps import db_sessions
+from app.api.dependencies.auth import get_current_user_auth
+from app.api.dependencies.database import get_repository
+from app.api.dependencies.service import get_service
+from app.api.dependencies.users import get_users_filters
+from app.database.repositories.users import UsersRepository
+from app.models.user import User
+from app.schemas.user import UserInUpdate, UserResponse, UsersFilters
+from app.services.users import UsersService
+from app.utils import ERROR_RESPONSES, handle_result
 
 router = APIRouter()
 
 
-@router.get("", response_model=schemas.UserResponse, responses=ERROR_RESPONSES)
+@router.get("", response_model=UserResponse, responses=ERROR_RESPONSES)
 async def read_users(
-    *, db: AsyncSession = Depends(db_sessions["docker_db"]), filters: schemas.UsersFilterParams = Depends()
+    *,
+    users_service: UsersService = Depends(get_service(UsersService)),
+    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+    users_filters: UsersFilters = Depends(get_users_filters),
 ):
-
-    services.user.db = db
-    result = await services.user.get_users(filters=filters.dict())
+    result = await users_service.get_users(
+        users_repo=users_repo,
+        users_filters=users_filters,
+    )
 
     return await handle_result(result)
 
 
-@router.get("/{user_id}", response_model=schemas.UserResponse, responses=ERROR_RESPONSES)
-async def read_user_by_id(*, db: AsyncSession = Depends(db_sessions["docker_db"]), user_id: int) -> ServiceResult:
+@router.get("/{user_id}", response_model=UserResponse, responses=ERROR_RESPONSES)
+async def read_user_by_id(
+    *,
+    user: User = Depends(get_current_user_auth()),
+    users_service: UsersService = Depends(get_service(UsersService)),
+    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+    user_id: int,
+) -> UserResponse:
 
-    services.user.db = db
-    result = services.user.get_user_by_id(user_id=user_id)
+    result = await users_service.get_user_by_id(users_repo=users_repo, user_id=user_id)
 
-    return handle_result(result)
+    return await handle_result(result)
 
 
-@router.put("/{user_id}", response_model=schemas.UserResponse, responses=ERROR_RESPONSES)
+@router.patch(
+    "",
+    status_code=HTTP_200_OK,
+    response_model=UserResponse,
+    responses=ERROR_RESPONSES,
+    name="users:update-user",
+)
 async def update_user(
-    *, db: AsyncSession = Depends(db_sessions["docker_db"]), user_id: int, user_in: schemas.UserUpdate
-) -> ServiceResult:
+    *,
+    users_service: UsersService = Depends(get_service(UsersService)),
+    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+    user_in: UserInUpdate,
+    token_user: User = Depends(get_current_user_auth()),
+) -> UserResponse:
 
-    services.user.db = db
-    result = services.user.update_user(user_id=user_id, user_in=user_in)
-
-    return handle_result(result)
-
-
-@router.delete("/{user_id}", response_model=schemas.UserResponse, responses=ERROR_RESPONSES)
-async def delete_user(*, db: AsyncSession = Depends(db_sessions["docker_db"]), user_id: int) -> ServiceResult:
-
-    services.user.db = db
-    result = services.user.delete_user(user_id=user_id)
-
-    return handle_result(result)
+    result = await users_service.update_user(users_repo=users_repo, token_user=token_user, user_in=user_in)
+    return await handle_result(result)
 
 
-@router.post("", response_model=schemas.UserResponse, responses=ERROR_RESPONSES)
-async def create_user(
-    *, db: AsyncSession = Depends(db_sessions["docker_db"]), user_in: schemas.UserCreate
-) -> ServiceResult:
-    """
-    Create new users.
-    """
-    services.user.db = db
-    result = await services.user.create_user(obj_in=user_in)
+@router.delete(
+    "",
+    status_code=HTTP_200_OK,
+    response_model=UserResponse,
+    responses=ERROR_RESPONSES,
+    name="users:delete-user",
+)
+async def delete_user(
+    *,
+    users_service: UsersService = Depends(get_service(UsersService)),
+    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+    token_user: User = Depends(get_current_user_auth()),
+) -> UserResponse:
 
+    result = await users_service.delete_user(users_repo=users_repo, token_user=token_user)
     return await handle_result(result)

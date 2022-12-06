@@ -1,8 +1,8 @@
 from pathlib import Path
-from fastapi import FastAPI
 
-from fastapi.exceptions import RequestValidationError
-from fastapi.exceptions import HTTPException
+from asgi_correlation_id import CorrelationIdMiddleware
+from fastapi import FastAPI
+from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import (
     get_redoc_html,
@@ -10,14 +10,14 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from starlette.staticfiles import StaticFiles
-from asgi_correlation_id import CorrelationIdMiddleware
 
 from app.api.v1 import api_router
 from app.core import settings
+from app.core.events import create_start_app_handler, create_stop_app_handler
 from app.utils import (
     AppExceptionCase,
-    app_exception_handler,
     CustomizeLogger,
+    app_exception_handler,
     http_exception_handler,
     request_validation_exception_handler,
 )
@@ -74,6 +74,9 @@ def create_app() -> FastAPI:
     @_app.exception_handler(AppExceptionCase)
     async def custom_app_exception_handler(request, e):
         return await app_exception_handler(request, e)
+
+    _app.add_event_handler("startup", create_start_app_handler(_app, settings))
+    _app.add_event_handler("shutdown", create_stop_app_handler(_app))
 
     return _app
 

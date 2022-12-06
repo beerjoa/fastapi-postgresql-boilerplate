@@ -1,10 +1,11 @@
-from typing import Optional, Dict, Any
+from typing import Any, Dict
+
 from pydantic import BaseModel
 
 
 class ErrorResponse(BaseModel):
     app_exception: str = "FailToSendAlert"
-    context: Optional[Dict[str, Any]] = {"reason": "Not Connected with notification channel"}
+    context: Dict[str, Any] | None = {"reason": "Not Connected with notification channel"}
 
     class Config:
         orm_mode = True
@@ -13,7 +14,7 @@ class ErrorResponse(BaseModel):
 class ApiResponse(BaseModel):
     message: str = "default response message"
     data: BaseModel
-    detail: Optional[Dict[str, Any]] = {"key": "val"}
+    detail: Dict[str, Any] | None = {"key": "val"}
 
     class Config:
         orm_mode = True

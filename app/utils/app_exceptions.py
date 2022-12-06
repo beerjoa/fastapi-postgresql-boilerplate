@@ -1,6 +1,7 @@
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
-from app.schemas import ErrorResponse
+
+from app.schemas.message import ErrorResponse
 
 ERROR_RESPONSES = {
     status.HTTP_400_BAD_REQUEST: {
@@ -43,12 +44,6 @@ async def app_exception_handler(request: Request, exc: AppExceptionCase):
         status_code=exc.status_code,
         content={"app_exception": exc.expception_case, "context": exc.context},
     )
-
-
-# class StatusCode(int, Enum):
-#     OK = status.HTTP_200_OK
-#     CREATED = status.HTTP_201_CREATED
-#     NOT_FOUND = status.HTTP_404_NOT_FOUND
 
 
 class AppException:
