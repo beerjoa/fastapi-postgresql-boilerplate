@@ -1,0 +1,15 @@
+{
+  "message": "signuped user",
+  "data": {
+    "id": 2,
+    "username": "tester",
+    "email": "tester@gmail.com",
+    "created_at": "2022-12-05T20:46:35.466662+00:00",
+    "updated_at": null,
+    "deleted_at": null,
+    "token": {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0ZXIiLCJlbWFpbCI6InRlc3RlckBnbWFpbC5jb20iLCJleHAiOjE2NzAyNzQ5OTUsInN1YiI6ImFjY2VzcyJ9.yrXlHvUp744PY0PBbtAY7w3nr2pYtYmJJOwynX0koLI",
+      "token_type": "bearer"
+    }
+  }
+}

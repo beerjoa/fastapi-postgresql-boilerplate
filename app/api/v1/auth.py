@@ -25,15 +25,13 @@ router = APIRouter()
 async def get_user_by_token(
     *,
     users_service: UsersService = Depends(get_service(UsersService)),
-    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     token_user: User = Depends(get_current_user_auth()),
 ) -> ServiceResult:
     """
     Create new users.
     """
-    result = await users_service.get_user_by_id(
-        user_id=token_user.id,
-        users_repo=users_repo,
+    result = await users_service.get_user_by_token(
+        token_user=token_user,
     )
 
     return await handle_result(result)
