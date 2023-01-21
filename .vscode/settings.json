@@ -21,4 +21,23 @@
         "--max-line-length=120",
         "--ignore=E402,F841,F401,E302,E305",
     ],
+    "cSpell.words": [
+        "asgi",
+        "asyncpg",
+        "autoflush",
+        "fastapi",
+        "gensalt",
+        "httpx",
+        "jsonable",
+        "passlib",
+        "postgresql",
+        "pydantic",
+        "pytestmark",
+        "redoc",
+        "RWAPI",
+        "sessionmaker",
+        "signin",
+        "sqlalchemy",
+        "starlette"
+    ],
 }

@@ -72,7 +72,7 @@ class UsersService(BaseService):
         users_filters: UsersFilters = Depends(get_users_filters),
         users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     ) -> UserResponse:
-        users = await users_repo.get_filttered_users(skip=users_filters.skip, limit=users_filters.limit)
+        users = await users_repo.get_filtered_users(skip=users_filters.skip, limit=users_filters.limit)
 
         if not users:
             return response_4xx(
@@ -82,7 +82,7 @@ class UsersService(BaseService):
         return dict(
             status_code=HTTP_200_OK,
             content={
-                "message": "filtered users",
+                "message": constant.SUCCESS_GET_USERS,
                 "data": jsonable_encoder([UserOutData.from_orm(user) for user in users]),
             },
         )
@@ -110,7 +110,7 @@ class UsersService(BaseService):
 
         return dict(
             status_code=HTTP_201_CREATED,
-            content={"message": "signuped user", "data": jsonable_encoder(user_data_with_auth)},
+            content={"message": constant.SUCCESS_SIGN_UP, "data": jsonable_encoder(user_data_with_auth)},
         )
 
     @return_service
@@ -173,8 +173,8 @@ class UsersService(BaseService):
         token_user: User,
         users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     ) -> ServiceResult:
-
         deleted_user = await users_repo.delete_user(user=token_user)
+
         return dict(
             status_code=HTTP_200_OK,
             content={"message": constant.SUCCESS_DELETE_USER, "data": jsonable_encoder(deleted_user)},

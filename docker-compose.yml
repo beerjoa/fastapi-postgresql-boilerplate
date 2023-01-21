@@ -7,6 +7,8 @@ networks:
 volumes:
   postgresql_data: 
     driver: local
+  mssql_data:
+    driver: local
 
 services:
   # Database
@@ -21,6 +23,43 @@ services:
       - postgresql_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    restart: always
     networks:
       - fpb-net
+
+  # Database
+  mysql:
+    container_name: mysql
+    image: mysql:8.0.28
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_HOST=%
+    ports:
+      - "13306:3306"
+    restart: always
+    networks:
+      - fpb-net
+
+  
+  # Database
+  mssql:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Passw@rd
+      - MSSQL_PID=Developer
+      - MSSQL_DB=events_service
+      - MSSQL_USER=SA
+      - MSSQL_PASSWORD=Passw@rd
+      - MSSQL_DB_AUDIT_LOG=events_service_audit_log
+    volumes:
+      - mssql_data:/var/opt/mssql
+    ports:
+      - 1433:1433
+    restart: always
+    networks:
+      - fpb-net
+
   

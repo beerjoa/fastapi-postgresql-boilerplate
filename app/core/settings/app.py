@@ -24,6 +24,7 @@ class AppSettings(BaseAppSettings):
     api_v1_prefix: str = "/api/v1"
     secret_key: SecretStr
     jwt_token_prefix: str = "bearer"
+    auth_header_key: str = "Authorization"
 
     db_url_conf = DBUrlSettings()
 

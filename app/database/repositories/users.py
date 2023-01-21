@@ -40,7 +40,7 @@ class UsersRepository(BaseRepository):
         result = raw_result.fetchone()
         return result.User if result is not None else result
 
-    async def get_filttered_users(
+    async def get_filtered_users(
         self,
         *,
         skip: int = 0,

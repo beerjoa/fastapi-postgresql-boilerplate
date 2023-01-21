@@ -6,14 +6,14 @@ from fastapi.security import APIKeyHeader
 from starlette.status import HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
 
 from app.api.dependencies.database import get_repository
-from app.core import constant
+from app.core import constant, settings
 from app.core.config import get_app_settings
 from app.core.settings.app import AppSettings
 from app.core.token import get_user_from_token
 from app.database.repositories.users import UsersRepository
 from app.models.user import User
 
-AUTH_HEADER_KEY = "bearer"
+AUTH_HEADER_KEY = settings.auth_header_key
 
 
 class RWAPIKeyHeader(APIKeyHeader):

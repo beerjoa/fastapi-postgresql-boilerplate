@@ -14,7 +14,13 @@ from app.utils import ERROR_RESPONSES, handle_result
 router = APIRouter()
 
 
-@router.get("", response_model=UserResponse, responses=ERROR_RESPONSES)
+@router.get(
+    "",
+    status_code=HTTP_200_OK,
+    response_model=UserResponse,
+    responses=ERROR_RESPONSES,
+    name="users:all",
+)
 async def read_users(
     *,
     users_service: UsersService = Depends(get_service(UsersService)),
@@ -29,7 +35,13 @@ async def read_users(
     return await handle_result(result)
 
 
-@router.get("/{user_id}", response_model=UserResponse, responses=ERROR_RESPONSES)
+@router.get(
+    "/{user_id}",
+    status_code=HTTP_200_OK,
+    response_model=UserResponse,
+    responses=ERROR_RESPONSES,
+    name="user:info-by-id",
+)
 async def read_user_by_id(
     *,
     user: User = Depends(get_current_user_auth()),
@@ -48,7 +60,7 @@ async def read_user_by_id(
     status_code=HTTP_200_OK,
     response_model=UserResponse,
     responses=ERROR_RESPONSES,
-    name="users:update-user",
+    name="user:patch-by-id",
 )
 async def update_user(
     *,
@@ -67,7 +79,7 @@ async def update_user(
     status_code=HTTP_200_OK,
     response_model=UserResponse,
     responses=ERROR_RESPONSES,
-    name="users:delete-user",
+    name="user:delete-by-id",
 )
 async def delete_user(
     *,

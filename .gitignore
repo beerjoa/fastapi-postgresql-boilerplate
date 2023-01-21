@@ -226,7 +226,7 @@ cython_debug/
 **/.hide/
 **/.idea/
 /database/init_mssql.sql
-*/docker-compose.yml
+docker-compose.yml
 
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,macos,linux
