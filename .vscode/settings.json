@@ -29,8 +29,12 @@
         "gensalt",
         "httpx",
         "jsonable",
+        "modtime",
         "nullable",
+        "onupdate",
         "passlib",
+        "plpgsql",
+        "poolclass",
         "postgresql",
         "pydantic",
         "pytestmark",
@@ -40,6 +44,7 @@
         "sessionmaker",
         "signin",
         "sqlalchemy",
-        "starlette"
+        "starlette",
+        "uvicorn"
     ],
 }

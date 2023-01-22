@@ -23,9 +23,7 @@ async def initialized_app(app: FastAPI) -> FastAPI:
     from app.core import settings
 
     async with LifespanManager(app):
-        engine = create_async_engine(
-            url=str(settings.db_url_conf.docker_db), pool_size=10, max_overflow=0, echo=False, future=True
-        )
+        engine = create_async_engine(url=str(settings.db_url), pool_size=10, max_overflow=0, echo=False, future=True)
         async_session_factory = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False, autoflush=True)
         app.state.pool = async_session_factory
         yield app

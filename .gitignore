@@ -223,10 +223,15 @@ cython_debug/
 # Support for Project snippet scope
 
 # custom
-**/.hide/
-**/.idea/
+.hide
+.idea
 /database/init_mssql.sql
 docker-compose.yml
+.backup
+.fleet
 
+.env.*
+!.env.example
+.db.env
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,macos,linux

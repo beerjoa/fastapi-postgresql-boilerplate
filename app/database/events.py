@@ -12,9 +12,7 @@ logger = logging.getLogger(__name__)
 async def connect_to_db(app: FastAPI, settings: AppSettings) -> None:
     logger.info("Connecting to database...")
 
-    engine = create_async_engine(
-        url=str(settings.db_url_conf.docker_db), pool_size=50, max_overflow=0, echo=True, future=True
-    )
+    engine = create_async_engine(url=str(settings.db_url), pool_size=50, max_overflow=0, echo=True, future=True)
     async_session_factory = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False, autoflush=True)
     app.state.pool = async_session_factory
 
