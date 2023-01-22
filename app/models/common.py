@@ -1,8 +1,5 @@
-import datetime
-
-from pydantic import BaseModel, Field, validator
 from sqlalchemy import Column, DateTime, text
-from sqlalchemy.orm import declarative_mixin, declared_attr
+from sqlalchemy.orm import declarative_mixin
 
 
 @declarative_mixin

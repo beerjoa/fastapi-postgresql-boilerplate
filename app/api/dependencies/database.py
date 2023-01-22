@@ -1,6 +1,5 @@
 from typing import AsyncGenerator, Callable, Type
 
-from asyncpg.connection import Connection
 from fastapi import Depends
 from fastapi.requests import Request
 from sqlalchemy.ext.asyncio import AsyncSession
