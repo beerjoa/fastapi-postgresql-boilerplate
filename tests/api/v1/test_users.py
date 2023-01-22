@@ -34,9 +34,7 @@ environ["APP_ENV"] = "test"
 pytestmark = pytest.mark.asyncio
 
 
-async def test_signup(
-    app: FastAPI, client: AsyncClient, random_user: Dict[str, str], created_random_user: Dict[str, str]
-) -> None:
+async def test_signup(app: FastAPI, client: AsyncClient, random_user: Dict[str, str], created_random_user: Dict[str, str]) -> None:
     response = await client.post(app.url_path_for("auth:signup"), json=random_user)
     result = response.json()
     created_user = result.get("data")

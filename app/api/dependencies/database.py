@@ -21,7 +21,9 @@ async def _get_connection_from_session(
 def get_repository(
     repo_type: Type[BaseRepository],
 ) -> Callable[[AsyncSession], BaseRepository]:
-    def _get_repo(session: AsyncSession = Depends(_get_connection_from_session)) -> BaseRepository:
+    def _get_repo(
+        session: AsyncSession = Depends(_get_connection_from_session),
+    ) -> BaseRepository:
         return repo_type(session)
 
     return _get_repo

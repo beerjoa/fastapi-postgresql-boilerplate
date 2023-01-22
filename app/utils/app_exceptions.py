@@ -52,7 +52,11 @@ class AppException:
         Response4XX
         """
 
-        def __init__(self, status_code: status = status.HTTP_400_BAD_REQUEST, context: dict = None):
+        def __init__(
+            self,
+            status_code: status = status.HTTP_400_BAD_REQUEST,
+            context: dict = None,
+        ):
             # status_code = status_code
             AppExceptionCase.__init__(self, status_code, context)
 

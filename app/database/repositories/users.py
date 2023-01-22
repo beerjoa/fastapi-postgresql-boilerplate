@@ -34,7 +34,10 @@ class UsersRepository(BaseRepository):
 
     async def get_duplicated_user(self, *, user_in: UserInCreate) -> User:
         query = select(User).where(
-            and_(or_(User.username == user_in.username, User.email == user_in.email), User.deleted_at.is_(None))
+            and_(
+                or_(User.username == user_in.username, User.email == user_in.email),
+                User.deleted_at.is_(None),
+            )
         )
         raw_result = await self.connection.execute(query)
         result = raw_result.fetchone()

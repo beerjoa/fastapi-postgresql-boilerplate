@@ -49,6 +49,11 @@ profile = "black"
 src_paths = ["app", "tests"]
 combine_as_imports = true
 
+[tool.black]
+line-length = 200
+target-version = ["py310"]
+include = '\.pyi?$'
+
 [tool.flake8]
 ignore = ["E266"]
 
