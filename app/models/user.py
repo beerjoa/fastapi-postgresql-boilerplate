@@ -8,7 +8,11 @@ from app.models.rwmodel import RWModel
 class User(RWModel, DateTimeModelMixin):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, server_default=text("nextval('users_id_seq'::regclass)"))
+    id = Column(
+        Integer,
+        primary_key=True,
+        server_default=text("nextval('users_id_seq'::regclass)"),
+    )
     username = Column(String(32), nullable=False, unique=True)
     email = Column(String(256), nullable=False, unique=True)
     salt = Column(String(255), nullable=False)

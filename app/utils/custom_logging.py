@@ -1,9 +1,10 @@
+import json
 import logging
 import sys
-import json
 from pathlib import Path
-from loguru import logger
+
 from asgi_correlation_id.context import correlation_id
+from loguru import logger
 
 
 class InterceptHandler(logging.Handler):

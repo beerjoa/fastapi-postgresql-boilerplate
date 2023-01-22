@@ -9,18 +9,36 @@ volumes:
     driver: local
 
 services:
+  # App
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - "./app:/data/backend/app"
+      - "./tests:/data/backend/tests"
+      - "./.env:/data/backend/.env"
+    ports:
+      - "8000:8000"
+    command: poetry run uvicorn app.main:app --host 0.0.0.0 --reload --log-level debug
+    restart: always
+    networks:
+      - fpb-net
+    depends_on:
+      - postgresql
+
   # Database
   postgresql:
     container_name: postgresql
     image: postgres:12.2-alpine
     env_file:
-      - ".env"
+      - ".db.env"
     volumes:
-      # - "./database/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql"
-      - "./database/init_db.sh:/docker-entrypoint-initdb.d/init_db.sh"
       - postgresql_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    restart: always
     networks:
       - fpb-net
-  

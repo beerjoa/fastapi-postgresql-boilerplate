@@ -1,8 +1,13 @@
 [tool.poetry]
 name = "fastapi-postgresql-boilerplate"
 version = "0.2.0"
-description = ""
-authors = ["Jaeyong Shim <yoooong2@gmail.com>"]
+description = "FastAPI PostgreSQL Boilerplate"
+license = "MIT"
+authors = ["Jaeyong Shim <dev.beerjoa@gmail.com>"]
+maintainers = ["Jaeyong Shim <dev.beerjoa@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/beerjoa/fastapi-postgresql-boilerplate"
+keywords = ["PostgreSQL", "FastAPI", "docker", "boilerplate", "docker-compose", "poetry"]
 packages = [
     {include = "app"}
 ]
@@ -36,12 +41,18 @@ coverage = "^6.5.0"
 pytest = "^7.2.0"
 pylint = "^2.15.5"
 pytest-cov = "^3.0.0"
-
+asgi-lifespan = "^2.0.0"
+pytest-asyncio = "^0.20.3"
 
 [tool.isort]
 profile = "black"
 src_paths = ["app", "tests"]
 combine_as_imports = true
+
+[tool.black]
+line-length = 200
+target-version = ["py310"]
+include = '\.pyi?$'
 
 [tool.flake8]
 ignore = ["E266"]

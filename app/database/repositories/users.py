@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 
 from app.database.repositories.base import BaseRepository
 from app.models.user import User
-from app.schemas.user import UserInCreate, UserInDB, UserInSignIn, UserInUpdate
+from app.schemas.user import UserInCreate, UserInDB, UserInUpdate
 
 
 class UsersRepository(BaseRepository):
@@ -34,13 +34,16 @@ class UsersRepository(BaseRepository):
 
     async def get_duplicated_user(self, *, user_in: UserInCreate) -> User:
         query = select(User).where(
-            and_(or_(User.username == user_in.username, User.email == user_in.email), User.deleted_at.is_(None))
+            and_(
+                or_(User.username == user_in.username, User.email == user_in.email),
+                User.deleted_at.is_(None),
+            )
         )
         raw_result = await self.connection.execute(query)
         result = raw_result.fetchone()
         return result.User if result is not None else result
 
-    async def get_filttered_users(
+    async def get_filtered_users(
         self,
         *,
         skip: int = 0,

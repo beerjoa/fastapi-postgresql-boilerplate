@@ -1,6 +1,5 @@
 from typing import AsyncGenerator, Callable, Type
 
-from asyncpg.connection import Connection
 from fastapi import Depends
 from fastapi.requests import Request
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -22,7 +21,9 @@ async def _get_connection_from_session(
 def get_repository(
     repo_type: Type[BaseRepository],
 ) -> Callable[[AsyncSession], BaseRepository]:
-    def _get_repo(session: AsyncSession = Depends(_get_connection_from_session)) -> BaseRepository:
+    def _get_repo(
+        session: AsyncSession = Depends(_get_connection_from_session),
+    ) -> BaseRepository:
         return repo_type(session)
 
     return _get_repo

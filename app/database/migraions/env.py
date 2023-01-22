@@ -13,7 +13,7 @@ from app.core.config import get_app_settings
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[3]))
 
 SETTINGS = get_app_settings()
-DATABASE_URL = SETTINGS.db_url_conf.docker_db
+DATABASE_URL = SETTINGS.db_url
 
 config = context.config
 

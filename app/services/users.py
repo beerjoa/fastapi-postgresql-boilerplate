@@ -45,7 +45,10 @@ class UsersService(BaseService):
 
         return dict(
             status_code=HTTP_200_OK,
-            content={"message": constant.SUCCESS_MATCHED_USER_ID, "data": jsonable_encoder(UserOutData.from_orm(user))},
+            content={
+                "message": constant.SUCCESS_MATCHED_USER_ID,
+                "data": jsonable_encoder(UserOutData.from_orm(user)),
+            },
         )
 
     @return_service
@@ -55,7 +58,8 @@ class UsersService(BaseService):
     ) -> ServiceResult:
         if not token_user:
             return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST, context={"reason": constant.FAIL_VALIDATION_MATCHED_USER_TOKEN}
+                status_code=HTTP_400_BAD_REQUEST,
+                context={"reason": constant.FAIL_VALIDATION_MATCHED_USER_TOKEN},
             )
 
         return dict(
@@ -72,17 +76,18 @@ class UsersService(BaseService):
         users_filters: UsersFilters = Depends(get_users_filters),
         users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     ) -> UserResponse:
-        users = await users_repo.get_filttered_users(skip=users_filters.skip, limit=users_filters.limit)
+        users = await users_repo.get_filtered_users(skip=users_filters.skip, limit=users_filters.limit)
 
         if not users:
             return response_4xx(
-                status_code=HTTP_404_NOT_FOUND, context={"reason": constant.FAIL_VALIDATION_MATCHED_FILTERED_USERS}
+                status_code=HTTP_404_NOT_FOUND,
+                context={"reason": constant.FAIL_VALIDATION_MATCHED_FILTERED_USERS},
             )
 
         return dict(
             status_code=HTTP_200_OK,
             content={
-                "message": "filtered users",
+                "message": constant.SUCCESS_GET_USERS,
                 "data": jsonable_encoder([UserOutData.from_orm(user) for user in users]),
             },
         )
@@ -98,7 +103,8 @@ class UsersService(BaseService):
 
         if duplicate_user:
             return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST, context={"reason": constant.FAIL_VALIDATION_USER_DUPLICATED}
+                status_code=HTTP_400_BAD_REQUEST,
+                context={"reason": constant.FAIL_VALIDATION_USER_DUPLICATED},
             )
 
         created_user = await users_repo.signup_user(user_in=user_in)
@@ -110,7 +116,10 @@ class UsersService(BaseService):
 
         return dict(
             status_code=HTTP_201_CREATED,
-            content={"message": "signuped user", "data": jsonable_encoder(user_data_with_auth)},
+            content={
+                "message": constant.SUCCESS_SIGN_UP,
+                "data": jsonable_encoder(user_data_with_auth),
+            },
         )
 
     @return_service
@@ -124,20 +133,21 @@ class UsersService(BaseService):
 
         if not searched_user:
             return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST, context={"reason": constant.FAIL_VALIDATION_MATCHED_USER_EMAIL}
+                status_code=HTTP_400_BAD_REQUEST,
+                context={"reason": constant.FAIL_VALIDATION_MATCHED_USER_EMAIL},
             )
 
-        validation_password = await users_repo.get_user_password_validation(
-            user=searched_user, password=user_in.password
-        )
+        validation_password = await users_repo.get_user_password_validation(user=searched_user, password=user_in.password)
         if not validation_password:
             return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST, context={"reason": constant.FAIL_VALIDATION_USER_WRONG_PASSWORD}
+                status_code=HTTP_400_BAD_REQUEST,
+                context={"reason": constant.FAIL_VALIDATION_USER_WRONG_PASSWORD},
             )
 
         if searched_user.deleted_at:
             return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST, context={"reason": constant.FAIL_VALIDATION_USER_DELETED}
+                status_code=HTTP_400_BAD_REQUEST,
+                context={"reason": constant.FAIL_VALIDATION_USER_DELETED},
             )
 
         created_token = token.create_token_for_user(user=searched_user, secret_key=secret_key)
@@ -147,7 +157,10 @@ class UsersService(BaseService):
 
         return dict(
             status_code=HTTP_200_OK,
-            content={"message": constant.SUCCESS_SIGN_IN, "data": jsonable_encoder(user_data_with_auth)},
+            content={
+                "message": constant.SUCCESS_SIGN_IN,
+                "data": jsonable_encoder(user_data_with_auth),
+            },
         )
 
     @return_service
@@ -173,9 +186,12 @@ class UsersService(BaseService):
         token_user: User,
         users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     ) -> ServiceResult:
-
         deleted_user = await users_repo.delete_user(user=token_user)
+
         return dict(
             status_code=HTTP_200_OK,
-            content={"message": constant.SUCCESS_DELETE_USER, "data": jsonable_encoder(deleted_user)},
+            content={
+                "message": constant.SUCCESS_DELETE_USER,
+                "data": jsonable_encoder(deleted_user),
+            },
         )
