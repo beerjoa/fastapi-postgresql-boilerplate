@@ -1,11 +1,19 @@
-
 .git
 .github
 .dockerignore
 .gitignore
+.env
 
+.env.*
+.db.env.*
+
+.backup
+.fleet
+.hide
 .idea
 .vscode
+.pytest_cache/
+.coverage
 
 __pycache__/
 *.py[cod]
@@ -14,7 +22,6 @@ __pycache__/
 htmlcov/
 .coverage
 .coverage.*
-.pytest_cache/
 .venv
 venv
 
@@ -23,5 +30,5 @@ venv
 .LSOverride
 ._*
 
-.vscode
-.idea
+var
+dist
