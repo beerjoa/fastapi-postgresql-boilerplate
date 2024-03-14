@@ -49,7 +49,6 @@ async def read_user_by_id(
     users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     user_id: int,
 ) -> UserResponse:
-
     result = await users_service.get_user_by_id(users_repo=users_repo, user_id=user_id)
 
     return await handle_result(result)
@@ -69,7 +68,6 @@ async def update_user(
     user_in: UserInUpdate,
     token_user: User = Depends(get_current_user_auth()),
 ) -> UserResponse:
-
     result = await users_service.update_user(users_repo=users_repo, token_user=token_user, user_in=user_in)
     return await handle_result(result)
 
@@ -87,6 +85,5 @@ async def delete_user(
     users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     token_user: User = Depends(get_current_user_auth()),
 ) -> UserResponse:
-
     result = await users_service.delete_user(users_repo=users_repo, token_user=token_user)
     return await handle_result(result)

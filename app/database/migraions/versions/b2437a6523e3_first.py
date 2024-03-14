@@ -1,11 +1,10 @@
 """first
 
 Revision ID: b2437a6523e3
-Revises: 
+Revises:
 Create Date: 2022-10-28 09:35:00.424510
 
 """
-from typing import Tuple
 
 import sqlalchemy as sa
 from alembic import op
@@ -33,7 +32,7 @@ def _create_updated_at_trigger() -> None:
     )
 
 
-def _timestamps() -> Tuple[sa.Column, sa.Column, sa.Column]:
+def _timestamps() -> tuple[sa.Column, sa.Column, sa.Column]:
     return (
         sa.Column(
             "created_at",

@@ -6,7 +6,7 @@ from loguru import logger
 from app.utils import AppExceptionCase
 
 
-class ServiceResult(object):
+class ServiceResult:
     def __init__(self, args):
         if isinstance(args, AppExceptionCase):
             self.success = False

@@ -47,7 +47,7 @@ class UsersService(BaseService):
             status_code=HTTP_200_OK,
             content={
                 "message": constant.SUCCESS_MATCHED_USER_ID,
-                "data": jsonable_encoder(UserOutData.from_orm(user)),
+                "data": jsonable_encoder(UserOutData.model_validate(user)),
             },
         )
 
@@ -66,7 +66,7 @@ class UsersService(BaseService):
             status_code=HTTP_200_OK,
             content={
                 "message": constant.SUCCESS_MATCHED_USER_TOKEN,
-                "data": jsonable_encoder(UserOutData.from_orm(token_user)),
+                "data": jsonable_encoder(UserOutData.model_validate(token_user)),
             },
         )
 
@@ -88,7 +88,7 @@ class UsersService(BaseService):
             status_code=HTTP_200_OK,
             content={
                 "message": constant.SUCCESS_GET_USERS,
-                "data": jsonable_encoder([UserOutData.from_orm(user) for user in users]),
+                "data": jsonable_encoder([UserOutData.model_validate(user) for user in users]),
             },
         )
 
@@ -110,7 +110,7 @@ class UsersService(BaseService):
         created_user = await users_repo.signup_user(user_in=user_in)
         created_token = token.create_token_for_user(user=created_user, secret_key=secret_key)
 
-        user_data_with_auth = UserAuthOutData.from_orm(created_user)
+        user_data_with_auth = UserAuthOutData.model_validate(created_user)
 
         user_data_with_auth.token = created_token
 
@@ -151,7 +151,7 @@ class UsersService(BaseService):
             )
 
         created_token = token.create_token_for_user(user=searched_user, secret_key=secret_key)
-        user_data_with_auth = UserAuthOutData.from_orm(searched_user)
+        user_data_with_auth = UserAuthOutData.model_validate(searched_user)
 
         user_data_with_auth.token = created_token
 
@@ -176,7 +176,7 @@ class UsersService(BaseService):
             status_code=HTTP_200_OK,
             content={
                 "message": constant.SUCCESS_UPDATE_USER,
-                "data": jsonable_encoder(UserOutData.from_orm(updated_user)),
+                "data": jsonable_encoder(UserOutData.model_validate(updated_user)),
             },
         )
 

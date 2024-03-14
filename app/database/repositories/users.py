@@ -1,7 +1,4 @@
-from datetime import datetime
-from typing import List
-
-from sqlalchemy import and_, or_, select
+from sqlalchemy import and_, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncConnection
 
 from app.database.repositories.base import BaseRepository
@@ -48,7 +45,7 @@ class UsersRepository(BaseRepository):
         *,
         skip: int = 0,
         limit: int = 100,
-    ) -> List[User]:
+    ) -> list[User]:
         query = select(User).offset(skip).limit(limit)
 
         raw_results = await self.connection.execute(query)
@@ -63,18 +60,18 @@ class UsersRepository(BaseRepository):
         )
         user_in_db_obj.change_password(user_in.password)
 
-        created_user = User(**user_in_db_obj.dict(exclude_none=True))
+        created_user = User(**user_in_db_obj.model_dump(exclude_none=True))
         self.connection.add(created_user)
         await self.connection.commit()
         await self.connection.refresh(created_user)
         return created_user
 
     async def update_user(self, *, user: User, user_in: UserInUpdate) -> User:
-        user_in_obj = user_in.dict(exclude_unset=True)
+        user_in_obj = user_in.model_dump(exclude_unset=True)
         if user_in.password:
             user.change_password(user_in.password)
 
-        for (key, val) in user_in_obj.items():
+        for key, val in user_in_obj.items():
             setattr(user, key, val)
 
         self.connection.add(user)
@@ -83,7 +80,8 @@ class UsersRepository(BaseRepository):
         return user
 
     async def delete_user(self, *, user: User) -> User:
-        user.deleted_at = datetime.utcnow()
+        user.deleted_at = func.now()
+
         self.connection.add(user)
         await self.connection.commit()
         await self.connection.refresh(user)

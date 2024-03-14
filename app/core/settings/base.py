@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class AppEnvTypes(Enum):
@@ -10,7 +10,6 @@ class AppEnvTypes(Enum):
 
 
 class BaseAppSettings(BaseSettings):
-    app_env: AppEnvTypes = AppEnvTypes.dev
+    model_config = SettingsConfigDict(env_file=".env")
 
-    class Config:
-        env_file = ".env"
+    app_env: AppEnvTypes = AppEnvTypes.dev
