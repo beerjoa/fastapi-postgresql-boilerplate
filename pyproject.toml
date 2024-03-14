@@ -34,7 +34,6 @@ sqlalchemy = "2.0.27"
 sqlacodegen = "3.0.0rc5"
 pydantic-settings = "^2.2.1"
 passlib = {extras=["bcrypt"], version = "^1.7.4"}
-python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.4.3"
@@ -42,21 +41,30 @@ pytest = "^8.1.1"
 pytest-cov = "^4.1.0"
 asgi-lifespan = "^2.1.0"
 pytest-asyncio = "^0.23.5.post1"
-pytest-asyncio = "^0.20.3"
+ruff = "^0.3.2"
 
-[tool.isort]
-profile = "black"
-src_paths = ["app", "tests"]
-combine_as_imports = true
-
-[tool.black]
+[tool.ruff]
+exclude = []
 line-length = 200
-target-version = ["py310"]
-include = '\.pyi?$'
+indent-width = 4
+target-version = "py312"
 
-[tool.flake8]
-ignore = ["E266"]
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "UP", "W", "I"]
+ignore = ["E266", "W291"]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "F403"]
+
+[tool.ruff.format]
+quote-style = "double"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
 
 [build-system]
-requires = ["poetry-core>=1.2.0"]
+requires = ["poetry-core>=1.8.0"]
 build-backend = "poetry.core.masonry.api"
