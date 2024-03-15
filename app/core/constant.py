@@ -13,7 +13,7 @@ SUCCESS_DELETE_USER = "Deleted user successfully."
 # FAIL
 FAIL_VALIDATION_USER_DUPLICATED = "There is a duplicate user already."
 FAIL_VALIDATION_USER_WRONG_PASSWORD = "Invalid user password."
-FAIL_VALIDATION_USER_DELETED = "Invalid user password."
+FAIL_VALIDATION_USER_DELETED = "The user is deleted."
 FAIL_VALIDATION_MATCHED_USER_TOKEN = "No user matched with token."
 FAIL_VALIDATION_MATCHED_USER_EMAIL = "No user matched with email."
 FAIL_VALIDATION_MATCHED_USER_ID = "No user matched with ID."

@@ -9,4 +9,4 @@ class RWModel:
     __name__: str
 
 
-RWModel = declarative_base(RWModel)
+RWModel = declarative_base(cls=RWModel)

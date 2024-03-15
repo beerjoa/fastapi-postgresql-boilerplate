@@ -235,3 +235,4 @@ docker-compose.yml
 .db.env
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,macos,linux
+app/logging_conf.json

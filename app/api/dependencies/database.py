@@ -1,4 +1,4 @@
-from typing import AsyncGenerator, Callable, Type
+from collections.abc import AsyncGenerator, Callable
 
 from fastapi import Depends
 from fastapi.requests import Request
@@ -19,7 +19,7 @@ async def _get_connection_from_session(
 
 
 def get_repository(
-    repo_type: Type[BaseRepository],
+    repo_type: type[BaseRepository],
 ) -> Callable[[AsyncSession], BaseRepository]:
     def _get_repo(
         session: AsyncSession = Depends(_get_connection_from_session),
