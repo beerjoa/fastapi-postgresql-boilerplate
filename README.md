@@ -1,59 +1,70 @@
-# fastapi-postgresql-boilerplate
+<p align="center">
+  <a href="http://nestjs.com/" target="blank">
+    <img src="https://em-content.zobj.net/source/twitter/376/toolbox_1f9f0.png" width="128" alt="Nest Logo" />
+  </a>
+</p>
 
-  [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fbeerjoa%2Ffastapi-postgresql-boilerplate&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
-  ![GitHub license](https://img.shields.io/github/license/beerjoa/fastapi-postgresql-boilerplate)
-  ![GitHub issues](https://img.shields.io/github/issues/beerjoa/fastapi-postgresql-boilerplate)
-  ![GitHub last commit](https://img.shields.io/github/last-commit/beerjoa/fastapi-postgresql-boilerplate)
-  ![GitHub top language](https://img.shields.io/github/languages/top/beerjoa/fastapi-postgresql-boilerplate)
+<h1 align="center">
+  FPBP
+</h1>
 
+<div align="center">
+  <p>
+    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fbeerjoa%2Ffastapi-postgresql-boilerplate&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" alt="hits" />
+    <img src="https://img.shields.io/github/license/beerjoa/fastapi-postgresql-boilerplate" alt="GitHub" />
+    <img src="https://img.shields.io/github/issues/beerjoa/fastapi-postgresql-boilerplate" alt="GitHub issues" />
+    <img src="https://img.shields.io/github/last-commit/beerjoa/fastapi-postgresql-boilerplate" alt="GitHub last commit" />
+    <img src="https://img.shields.io/github/languages/top/beerjoa/fastapi-postgresql-boilerplate" alt="GitHub top language" />
+  </p>
+  <p>
+    <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white" alt="Python" />
+    <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=FastAPI&logoColor=white" alt="FastAPI" />
+    <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white" alt="Docker" />
+    <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=PostgreSQL&logoColor=white" alt="PostgreSQL" />
+    <img src="https://img.shields.io/badge/SQLAlchemy-008080?style=flat-square&logo=SQLAlchemy&logoColor=white" alt="SQLAlchemy" />
+    <img src="https://img.shields.io/badge/Poetry-5037E9?style=flat-square&logo=Python&logoColor=white" alt="Poetry" />
+    <img src="https://img.shields.io/badge/Pytest-0A9EDC?style=flat-square&logo=Pytest&logoColor=white" alt="Pytest" />
+    <img src="https://img.shields.io/badge/Ruff-000000?style=flat-square&logo=Rust&logoColor=white" alt="Ruff" />
+  </p>
+</div>
 
 ## Overview
 
-🚀 FastAPI is a modern, fast (high-performance) web framework for building APIs with Python 3.6+ based on standard Python-type hints. \
-I made and used this boilerplate for projects that I'm working on. 🧑‍💻 \
+`FPBP (fastapi-postgresql-boilerplate)` is a boilerplate that can serve as a base for FastAPI with PostgreSQL.
+
+🚀 FastAPI is a modern, fast (high-performance) web framework for building APIs with Python 3.6+ based on standard Python-type hints.
+I made and used this boilerplate for projects that I’m working on. 🧑‍💻
 it was powerful for building data-driven applications using schema for data validation, serialization, and documentation. 📝
 
+## Technology Stacks
 
-## Description
+- 🐍 [Python 3.12](https://docs.python.org/3.12/) - A programming language that lets you work quickly and integrate systems more effectively.
+- 🚀 [FastAPI](https://fastapi.tiangolo.com) - A modern, fast (high-performance), web framework for building APIs with Python 3.8+ based on standard Python type hints.
+- 🐳 [Docker](https://docs.docker.com) - A platform designed to help developers build, share, and run container applications.
+- 🐘 [PostgreSQL](https://www.postgresql.org/docs/) - An open-source object-relational database system.
+- 💾 [SQLAlchemy](https://docs.sqlalchemy.org/en/20/) - the Python SQL toolkit and Object Relational Mapper.
+- 📦 [Poetry](https://python-poetry.org/docs) - A tool for dependency management and packaging in Python.
+- 🧪 [Pytest](https://docs.pytest.org/en/8.0.x/) -  A framework that makes writing small, readable tests easy.
+- 🦀 [Ruff](https://docs.astral.sh/ruff/) - A fast Python linter and code formatter written in Rust.
 
-A boilerplate that can serve as a base for FastAPI with PostgreSQL \
-Made with [FastAPI](https://fastapi.tiangolo.com), [PostgreSQL](https://www.postgresql.org/docs), [Docker](https://docs.docker.com), [Coverage](https://coverage.readthedocs.io/en/6.5.0/), [SQLAlchemy](https://docs.sqlalchemy.org/en/14/), [Pytest](https://docs.pytest.org/en/7.2.x/), [Black](https://black.readthedocs.io/en/stable/), [Flake8](https://flake8.pycqa.org/en/latest/), [Isort](https://pycqa.github.io/isort/),
-and [Poetry](https://python-poetry.org/docs).
+## Development Features
 
-## Features
-
-#### Developer experience
-
-- 🐍 [Python 3.10](https://docs.python.org/3/) for programming language
-- 🚀 [FastAPI](https://fastapi.tiangolo.com) for handling HTTP requests and responses
-- 🐳 [Docker](https://docs.docker.com) for containerization
-- 🐘 [PostgreSQL](https://www.postgresql.org/docs) for database
-- 📦 [Poetry](https://python-poetry.org/docs) for dependency management
-- 📈 [Coverage](https://coverage.readthedocs.io/en/6.5.0/) for code coverage
-- 🧪 [Pytest](https://docs.pytest.org/en/7.2.x/) for unit and integration testing
-- 💾 [SQLAlchemy](https://docs.sqlalchemy.org/en/14/) ORM for interacting with a database
-- 🚧 [Flake8](https://flake8.pycqa.org/en/latest/) for linting
-- 🎨 [Black](https://black.readthedocs.io/en/stable/) for code formatting
-- 📚 [Isort](https://pycqa.github.io/isort/) for sorting imports
-
-#### Back-end app features
-
-- 🚫 JWT authentication for secure access to the API
-- 🎢 Layered architecture. (Controller, Service, Repository, Model)
-- 📦 Dependency injection for better code organization
-- 📝 Swagger and Redoc for API documentation and testing
-- ♻️ Schema validation for input and output data
+- 🚫 JWT authentication, to ensure secure access to the API.
+- 🎢 A Layered architecture (Controller, Service, Repository, Model).
+- 📦 Dependency injection for better code organization.
+- 📝 Swagger and Redoc for API documentation and testing.
+- ♻️ Schema validation, to ensure that input and output data conform to the defined schema.
 
 ## Requirements
 
-- Python 3.10
+- Python 3.12
 - Poetry
 - PostgreSQL
 - Docker
 
 ## Getting Started
-Every command below except `build` and `run` is executed in a docker container.
 
+Every command below except `build` and `run` is executed in a docker container.
 
 ### Set Environment Variables
 
@@ -68,43 +79,47 @@ $ cp .db.env.example .db.env
 
 ```bash
 # Build docker image
-$ docker-compose build
+$ docker compose build
 
 # Run the app in the background
-$ docker-compose up -d
+$ docker compose up -d
 
 # Watch logs
-$ docker-compose logs -f
+$ docker compose logs -f
 
 # Execute a command in a running container
-$ docker-compose exec app <command>
+$ docker compose exec app <command>
 ```
 
-### Migrate database 
-before test or use the app, you need to migrate the database.
+### Migrate database
+
+**before test or use the app, you need to migrate the database.**
+
 ```bash
 # init User table
-$ docker-compose exec app poetry run alembic upgrade head
+$ docker compose exec app poetry run alembic upgrade head
 ```
 
 ### Test
 
 ```bash
 # Run unit tests using pytest
-$ docker-compose exec app poetry run pytest
+$ docker compose exec app poetry run pytest
 ```
 
 ### Lint and format
 
+The Ruff is an extremely fast Python linter and code formatter written in Rust.
+It can replace flake8, isort, and black at once.
+
 ```bash
-# Run flake8
-$ docker-compose exec app poetry run flake8
+# Run Ruff
 
-# Run black
-$ docker-compose exec app poetry run black .
+## Code linting
+$ docker compose exec app poetry run ruff check .
 
-# Run isort
-$ docker-compose exec app poetry run isort .
+## Code formatting
+$ docker compose exec app poetry run ruff format .
 ```
 
 ## License
