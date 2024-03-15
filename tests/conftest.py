@@ -1,10 +1,11 @@
+from collections.abc import AsyncGenerator
 from os import environ
-from typing import Any, Dict
+from typing import Any
 
 import pytest_asyncio
 from asgi_lifespan import LifespanManager
 from fastapi import FastAPI
-from httpx import AsyncClient
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -19,20 +20,31 @@ def app() -> FastAPI:
 
 
 @pytest_asyncio.fixture
-async def initialized_app(app: FastAPI) -> FastAPI:
+async def initialized_app(app: FastAPI) -> AsyncGenerator[FastAPI]:
     from app.core import settings
 
     async with LifespanManager(app):
-        engine = create_async_engine(url=str(settings.db_url), pool_size=10, max_overflow=0, echo=False, future=True)
-        async_session_factory = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False, autoflush=True)
+        engine = create_async_engine(
+            url=str(settings.db_url),
+            pool_size=10,
+            max_overflow=0,
+            echo=False,
+            future=True,
+        )
+        async_session_factory = sessionmaker(
+            bind=engine,
+            class_=AsyncSession,
+            expire_on_commit=False,
+            autoflush=True,
+        )
         app.state.pool = async_session_factory
         yield app
 
 
 @pytest_asyncio.fixture
-async def client(initialized_app: FastAPI) -> AsyncClient:
+async def client(initialized_app: FastAPI) -> AsyncGenerator[AsyncClient]:
     async with AsyncClient(
-        app=initialized_app,
+        transport=ASGITransport(initialized_app),
         base_url="http://test",
         headers={"Content-Type": "application/json"},
     ) as client:
@@ -40,7 +52,7 @@ async def client(initialized_app: FastAPI) -> AsyncClient:
 
 
 @pytest_asyncio.fixture(scope="module")
-def random_user() -> Dict[str, str]:
+def random_user() -> dict[str, str]:
     return dict(
         username="tester",
         password="123",
@@ -49,12 +61,12 @@ def random_user() -> Dict[str, str]:
 
 
 @pytest_asyncio.fixture(scope="module")
-def filter_params() -> Dict[str, Any]:
+def filter_params() -> dict[str, Any]:
     return dict(skip=0, limit=100)
 
 
 @pytest_asyncio.fixture(scope="module")
-def created_random_user() -> Dict[str, str]:
+def created_random_user() -> dict[str, str]:
     return dict(
         id=None,
         username="tester",
@@ -64,7 +76,7 @@ def created_random_user() -> Dict[str, str]:
 
 
 @pytest_asyncio.fixture(scope="module")
-def update_target_user() -> Dict[str, str]:
+def update_target_user() -> dict[str, str]:
     return dict(
         id=None,
         username="new_tester",
@@ -74,7 +86,7 @@ def update_target_user() -> Dict[str, str]:
 
 
 @pytest_asyncio.fixture(scope="module")
-def invalid_user() -> Dict[str, str]:
+def invalid_user() -> dict[str, str]:
     return dict(
         id=-1,
         username="",

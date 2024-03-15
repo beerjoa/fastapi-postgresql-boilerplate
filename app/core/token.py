@@ -1,4 +1,5 @@
 from datetime import UTC, datetime, timedelta
+
 from jose import JWTError, jwt
 from pydantic import ValidationError
 
@@ -27,9 +28,7 @@ def create_token(
 
 
 def create_token_for_user(user: User, secret_key: str) -> UserTokenData:
-    token_user_dict = TokenUser(
-        id=user.id, username=user.username, email=user.email
-    ).model_dump()
+    token_user_dict = TokenUser(id=user.id, username=user.username, email=user.email).model_dump()
     created_token = create_token(
         content=token_user_dict,
         secret_key=secret_key,

@@ -72,7 +72,7 @@ async def _get_current_user(
 ) -> User:
     try:
         secret_key = str(settings.secret_key.get_secret_value())
-        user = get_user_from_token(token=token, secret_key=secret_key)
+        token_user = get_user_from_token(token=token, secret_key=secret_key)
 
     except ValueError:
         raise HTTPException(
@@ -81,7 +81,15 @@ async def _get_current_user(
         )
 
     try:
-        return await users_repo.get_user_by_email(email=user.email)
+        user = await users_repo.get_user_by_email(email=token_user.email)
+
+        if user is None:
+            raise HTTPException(
+                status_code=HTTP_400_BAD_REQUEST,
+                detail=constant.FAIL_VALIDATION_MATCHED_USER_EMAIL,
+            )
+        else:
+            return user
 
     except ValueError:
         raise HTTPException(
